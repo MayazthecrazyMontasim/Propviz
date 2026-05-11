@@ -68,7 +68,9 @@ export default function UploadPage() {
 
   const { job } = useJob(step === 3 ? jobId : null);
 
-  if (job?.status === "complete" && step === 3) setStep(4);
+  useEffect(() => {
+    if (job?.status === "complete" && step === 3) setStep(4);
+  }, [job?.status, step]);
 
   async function handleCreateJob(e: React.FormEvent) {
     e.preventDefault();
