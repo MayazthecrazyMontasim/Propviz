@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PropViz AI - Immersive Real Estate Tours</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error": "#ba1a1a",
+                      "on-background": "#221a12",
+                      "on-tertiary-fixed-variant": "#004c6a",
+                      "surface-tint": "#855300",
+                      "surface-container-low": "#fff1e5",
+                      "on-secondary-fixed": "#002113",
+                      "primary": "#855300",
+                      "on-primary-fixed": "#2a1700",
+                      "inverse-surface": "#382f25",
+                      "on-primary-container": "#613b00",
+                      "surface-bright": "#fff8f4",
+                      "primary-fixed-dim": "#ffb95f",
+                      "on-tertiary": "#ffffff",
+                      "inverse-primary": "#ffb95f",
+                      "on-tertiary-fixed": "#001e2d",
+                      "on-tertiary-container": "#004966",
+                      "on-secondary-container": "#00714d",
+                      "surface": "#fff8f4",
+                      "secondary-fixed-dim": "#4edea3",
+                      "tertiary-fixed": "#c5e7ff",
+                      "surface-variant": "#f0e0d1",
+                      "primary-container": "#f59e0b",
+                      "on-error": "#ffffff",
+                      "surface-container-highest": "#f0e0d1",
+                      "on-surface": "#221a12",
+                      "on-secondary": "#ffffff",
+                      "tertiary-container": "#1abdff",
+                      "on-secondary-fixed-variant": "#005236",
+                      "background": "#fff8f4",
+                      "outline-variant": "#d8c3ad",
+                      "on-primary-fixed-variant": "#653e00",
+                      "surface-container-high": "#f5e6d7",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary": "#00658b",
+                      "error-container": "#ffdad6",
+                      "tertiary-fixed-dim": "#7fd0ff",
+                      "secondary-container": "#6cf8bb",
+                      "surface-container": "#fbebdd",
+                      "outline": "#867461",
+                      "secondary-fixed": "#6ffbbe",
+                      "inverse-on-surface": "#feeedf",
+                      "on-surface-variant": "#534434",
+                      "secondary": "#006c49",
+                      "on-primary": "#ffffff",
+                      "primary-fixed": "#ffddb8",
+                      "surface-dim": "#e7d7c9",
+                      "on-error-container": "#93000a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Inter"],
+                      "display": ["Inter"],
+                      "body": ["Inter"],
+                      "label": ["Inter"]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface antialiased">
+<!-- TopNavBar Component -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface dark:bg-on-background border-b border-outline-variant dark:border-outline shadow-sm h-16">
+<nav class="max-w-[1280px] mx-auto px-8 h-full flex justify-between items-center">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black text-primary dark:text-primary-fixed-dim tracking-tight">PropViz AI</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="font-body text-label-md font-medium text-primary dark:text-primary-fixed-dim border-b-2 border-primary dark:border-primary-fixed-dim pb-1 transition-colors" href="#">New Tour</a>
+<a class="font-body text-label-md font-medium text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-variant/10 transition-colors" href="#">Dashboard</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant dark:text-surface-variant p-2 hover:bg-surface-container-low rounded-full transition-colors active:scale-95 duration-150 ease-in-out" data-icon="logout">logout</button>
+</div>
+</nav>
+</header>
+<main class="pt-16">
+<!-- Hero Section -->
+<section class="relative min-h-[870px] flex flex-col items-center justify-center text-center px-6 overflow-hidden bg-surface-bright">
+<div class="absolute inset-0 z-0 opacity-10 pointer-events-none">
+<div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary-container rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[30%] h-[30%] bg-tertiary-container rounded-full blur-[120px]"></div>
+</div>
+<div class="relative z-10 max-w-4xl mx-auto space-y-8">
+<div class="inline-flex items-center px-4 py-1.5 rounded-full bg-secondary-container/30 border border-secondary/20 text-secondary font-medium text-sm">
+<span class="material-symbols-outlined text-sm mr-2" data-icon="auto_awesome">auto_awesome</span>
+                    Introducing Automated Video Tours
+                </div>
+<h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-on-background leading-tight">
+                    Turn Floor Plans Into <br/>
+<span class="text-primary-container drop-shadow-sm">Immersive Tours</span>
+</h1>
+<p class="text-xl md:text-2xl text-on-surface-variant max-w-2xl mx-auto leading-relaxed font-light">
+                    Upload a floor plan and brochure — PropViz AI generates a 90-second video tour your buyers can watch from home.
+                </p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+<button class="px-8 py-4 bg-primary-container text-on-primary text-lg font-bold rounded-xl shadow-lg hover:shadow-xl transform transition-all active:scale-95 duration-150 ease-in-out flex items-center gap-2">
+                        Create First Tour
+                        <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<button class="px-8 py-4 bg-surface-container-lowest border border-outline-variant text-on-surface text-lg font-semibold rounded-xl hover:bg-surface-container transition-colors shadow-sm active:scale-95 duration-150 ease-in-out">
+                        View Dashboard
+                    </button>
+</div>
+</div>
+</section>
+<!-- Feature Bento Grid -->
+<section class="py-24 px-8 max-w-[1280px] mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Large Feature Card -->
+<div class="md:col-span-8 bg-surface-container-lowest p-8 md:p-12 rounded-[2rem] shadow-sm border border-outline-variant/30 flex flex-col justify-between group hover:shadow-md transition-shadow">
+<div>
+<div class="w-12 h-12 rounded-xl bg-primary-container/20 flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="architecture">architecture</span>
+</div>
+<h3 class="text-3xl font-bold mb-4">Precision Analysis</h3>
+<p class="text-on-surface-variant text-lg leading-relaxed max-w-md">
+                            Our proprietary AI interprets architectural drawings with surgical precision, mapping spatial flow and light paths automatically.
+                        </p>
+</div>
+<div class="mt-12 flex items-center gap-4 text-primary font-bold">
+<span>Explore our technology</span>
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1" data-icon="trending_flat">trending_flat</span>
+</div>
+</div>
+<!-- Small Vertical Card -->
+<div class="md:col-span-4 bg-primary text-on-primary p-8 rounded-[2rem] shadow-lg flex flex-col items-center text-center justify-center relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-20">
+<span class="material-symbols-outlined text-8xl" data-icon="speed">speed</span>
+</div>
+<h3 class="text-6xl font-black mb-2">90s</h3>
+<p class="text-primary-fixed text-lg font-medium">Generation Speed</p>
+<div class="mt-8 px-6 py-2 bg-on-primary text-primary rounded-full font-bold text-sm">Lightning Fast</div>
+</div>
+<!-- Small Square Card -->
+<div class="md:col-span-4 bg-surface-container-high p-8 rounded-[2rem] shadow-sm border border-outline-variant/30">
+<span class="material-symbols-outlined text-3xl text-secondary mb-4" data-icon="share">share</span>
+<h3 class="text-xl font-bold mb-2">Instant Sharing</h3>
+<p class="text-on-surface-variant">Export directly to social platforms or embed on listing pages with a single click.</p>
+</div>
+<!-- Asymmetric Wide Card -->
+<div class="md:col-span-8 bg-surface p-8 rounded-[2rem] shadow-sm border border-outline-variant/30 flex items-center gap-8">
+<div class="hidden lg:block w-32 h-32 rounded-2xl bg-gradient-to-br from-primary-container to-secondary-container"></div>
+<div>
+<h3 class="text-2xl font-bold mb-2">Branded for You</h3>
+<p class="text-on-surface-variant text-lg">Every tour is automatically themed with your agency's brand colors, logos, and agent contact details found in your brochure.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-24 bg-on-background text-white overflow-hidden relative">
+<div class="max-w-[1280px] mx-auto px-8 flex flex-col lg:flex-row items-center gap-16">
+<div class="lg:w-1/2">
+<h2 class="text-4xl md:text-5xl font-bold leading-tight mb-8">Ready to transform your listings into interactive experiences?</h2>
+<div class="flex flex-col gap-4">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary-container" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<p class="font-bold text-lg">No hardware required</p>
+<p class="text-outline-variant">Work entirely from existing digital assets.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary-container" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<p class="font-bold text-lg">Mobile Optimized</p>
+<p class="text-outline-variant">Tours render perfectly on any device browser.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:w-1/2 w-full">
+<div class="bg-surface-container-lowest/10 p-1 rounded-3xl backdrop-blur-sm border border-white/10">
+<div class="bg-surface p-8 rounded-2xl text-on-surface">
+<h4 class="text-2xl font-bold mb-6 text-center">Start Generating Now</h4>
+<div class="space-y-4">
+<div class="p-8 border-2 border-dashed border-outline-variant rounded-xl flex flex-col items-center justify-center gap-3 bg-surface-container-low hover:bg-surface-container-high transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-4xl text-outline group-hover:text-primary transition-colors" data-icon="upload_file">upload_file</span>
+<p class="text-sm font-medium text-on-surface-variant">Drop PDF or JPG floor plans here</p>
+</div>
+<button class="w-full py-4 bg-primary text-on-primary font-bold rounded-xl active:scale-95 transition-all shadow-lg">Process 1 Free Tour</button>
+<p class="text-xs text-center text-on-surface-variant">No credit card required. First tour is on us.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Component -->
+<footer class="w-full bg-surface-container-lowest dark:bg-on-background border-t border-outline-variant dark:border-outline py-8">
+<div class="max-w-[1280px] mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex flex-col items-center md:items-start gap-2">
+<span class="text-lg font-bold text-primary dark:text-primary-fixed-dim">PropViz AI</span>
+<p class="font-body text-label-sm text-on-surface-variant dark:text-surface-variant">© 2024 Win Win Properties. Powered by PropViz AI.</p>
+</div>
+<div class="flex gap-8">
+<a class="font-body text-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-body text-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="font-body text-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">Contact Support</a>
+</div>
+</div>
+</footer>
+</body></html>

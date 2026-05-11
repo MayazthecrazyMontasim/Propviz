@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PropViz AI - Property Tour Viewer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ba1a1a",
+                        "on-background": "#221a12",
+                        "on-tertiary-fixed-variant": "#004c6a",
+                        "surface-tint": "#855300",
+                        "surface-container-low": "#fff1e5",
+                        "on-secondary-fixed": "#002113",
+                        "primary": "#855300",
+                        "on-primary-fixed": "#2a1700",
+                        "inverse-surface": "#382f25",
+                        "on-primary-container": "#613b00",
+                        "surface-bright": "#fff8f4",
+                        "primary-fixed-dim": "#ffb95f",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#ffb95f",
+                        "on-tertiary-fixed": "#001e2d",
+                        "on-tertiary-container": "#004966",
+                        "on-secondary-container": "#00714d",
+                        "surface": "#fff8f4",
+                        "secondary-fixed-dim": "#4edea3",
+                        "tertiary-fixed": "#c5e7ff",
+                        "surface-variant": "#f0e0d1",
+                        "primary-container": "#f59e0b",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#f0e0d1",
+                        "on-surface": "#221a12",
+                        "on-secondary": "#ffffff",
+                        "tertiary-container": "#1abdff",
+                        "on-secondary-fixed-variant": "#005236",
+                        "background": "#fff8f4",
+                        "outline-variant": "#d8c3ad",
+                        "on-primary-fixed-variant": "#653e00",
+                        "surface-container-high": "#f5e6d7",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#00658b",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#7fd0ff",
+                        "secondary-container": "#6cf8bb",
+                        "surface-container": "#fbebdd",
+                        "outline": "#867461",
+                        "secondary-fixed": "#6ffbbe",
+                        "inverse-on-surface": "#feeedf",
+                        "on-surface-variant": "#534434",
+                        "secondary": "#006c49",
+                        "on-primary": "#ffffff",
+                        "primary-fixed": "#ffddb8",
+                        "surface-dim": "#e7d7c9",
+                        "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "display": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface dark:bg-on-background border-b border-outline-variant dark:border-outline shadow-sm h-16">
+<div class="max-w-[1280px] mx-auto flex justify-between items-center px-8 h-full">
+<div class="text-xl font-black text-primary dark:text-primary-fixed-dim tracking-tight">PropViz AI</div>
+<nav class="hidden md:flex items-center space-x-8 font-body text-label-md font-medium">
+<a class="text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-variant/10 transition-colors px-2 py-1" href="#">New Tour</a>
+<a class="text-primary dark:text-primary-fixed-dim border-b-2 border-primary dark:border-primary-fixed-dim pb-1" href="#">Dashboard</a>
+</nav>
+<div class="flex items-center">
+<button class="material-symbols-outlined text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors">logout</button>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-16 max-w-[1280px] mx-auto px-8">
+<!-- Video Player Section -->
+<section class="w-full mb-12">
+<div class="relative aspect-video w-full rounded-xl overflow-hidden bg-on-background shadow-2xl group">
+<div class="absolute inset-0 flex items-center justify-center">
+<img alt="Luxury Property Video Thumbnail" class="w-full h-full object-cover opacity-80" data-alt="A high-end luxury modern villa with expansive glass walls, a shimmering infinity pool, and perfectly manicured landscape design during the golden hour. The sunlight is warm and directional, creating a premium real estate aesthetic. The visual style is cinematic and crisp, with deep contrast and a professional architectural photography feel that emphasizes scale and luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3OfUazXXpOs8I-dyLvf_mZfH-fnMCbOjJkb6fIHLfx-Spm7Js8OmtXeCZPqOp6k4AzAngMa5up5TOBtRHLtk7gPo8cCWw0Jj6wu2tBRdMKTN_5Z7migxpInloMK_V43BH6U7O7xadcSEXu72BewcrCXXc1Y7ScrbVeRFc1XP4U6UMEqckf-0v_YPWXB7wBU3maTmzof2tZHGUq93aJ6aymaguPtiheWFm4UDstVwsuBm6tP7bYXOc5PXotwnwaYb2zdH4L468TRk"/>
+<!-- Play Button Overlay -->
+<button class="z-10 bg-primary-container/90 hover:bg-primary-container text-on-primary-container w-20 h-20 rounded-full flex items-center justify-center transition-all hover:scale-105 active:scale-95 shadow-xl">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<!-- Video Controls Mockup -->
+<div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+<div class="w-full h-1 bg-white/30 rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-1/3"></div>
+</div>
+<div class="flex items-center justify-between text-white">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined cursor-pointer">pause</span>
+<span class="material-symbols-outlined cursor-pointer">volume_up</span>
+<span class="text-label-md">04:12 / 12:45</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined cursor-pointer">settings</span>
+<span class="material-symbols-outlined cursor-pointer">fullscreen</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+<!-- Left Side: Property Info -->
+<div class="lg:col-span-2 space-y-6">
+<div>
+<h1 class="text-4xl md:text-5xl font-black text-on-background tracking-tight mb-2">The Amberwood Estate</h1>
+<div class="flex items-center gap-2 text-on-surface-variant font-medium">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<span class="text-xl">Beverly Hills, California, US</span>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-8 border-y border-outline-variant">
+<div class="flex flex-col">
+<span class="text-label-sm text-on-surface-variant uppercase tracking-wider font-bold">Bedrooms</span>
+<span class="text-2xl font-bold text-on-background">6 Beds</span>
+</div>
+<div class="flex flex-col">
+<span class="text-label-sm text-on-surface-variant uppercase tracking-wider font-bold">Bathrooms</span>
+<span class="text-2xl font-bold text-on-background">8 Baths</span>
+</div>
+<div class="flex flex-col">
+<span class="text-label-sm text-on-surface-variant uppercase tracking-wider font-bold">Area</span>
+<span class="text-2xl font-bold text-on-background">12,400 sqft</span>
+</div>
+<div class="flex flex-col">
+<span class="text-label-sm text-on-surface-variant uppercase tracking-wider font-bold">Price</span>
+<span class="text-2xl font-bold text-primary">$14.5M</span>
+</div>
+</div>
+<div class="space-y-4">
+<h3 class="text-xl font-bold">Property Overview</h3>
+<p class="text-on-surface-variant leading-relaxed">
+                        Experience unparalleled luxury in this architecturally significant estate. The Amberwood Estate features seamless indoor-outdoor living, a state-of-the-art home theater, and panoramic views of the Los Angeles skyline. Every detail has been curated using the finest materials, from Italian marble to reclaimed French oak flooring.
+                    </p>
+</div>
+</div>
+<!-- Right Side: Interaction Card -->
+<aside class="space-y-6">
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05)] border border-outline-variant sticky top-24">
+<h3 class="text-2xl font-bold text-on-background mb-4">Ready to see it in person?</h3>
+<p class="text-on-surface-variant mb-8 font-body leading-relaxed">
+                        Experience the grandeur of Amberwood Estate firsthand. Schedule a private viewing with our senior property consultants today.
+                    </p>
+<div class="space-y-4">
+<a class="flex items-center justify-center gap-3 w-full bg-secondary text-on-secondary py-4 px-6 rounded-lg font-bold transition-transform active:scale-95 hover:brightness-110" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">chat</span>
+                            Book Site Visit
+                        </a>
+<button class="flex items-center justify-center gap-3 w-full border border-outline-variant text-on-surface py-4 px-6 rounded-lg font-bold transition-all hover:bg-surface-container-low active:scale-95">
+<span class="material-symbols-outlined">share</span>
+                            Share this tour
+                        </button>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-primary-fixed">
+<img alt="Agent Portrait" data-alt="A professional male real estate agent in a sharp, tailored navy suit. He is smiling warmly in a bright, modern office setting with blurred architectural elements in the background. High-key lighting emphasizes a clean, corporate, yet approachable aesthetic consistent with premium property services." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlCDUHNE48hskcW8hy_-29ksr_Yb4wOhOLPZNsD5xqtM6AQUdZDGOiD65qVVy70VQkIEJlPI7yWB4UiI84QhbLSr7VXEGZEtikqScwmDtiEd9ZsbaYFWJKPffhDVqo0B8YAHZQCJUG3ALBLS2KXJCIGfykUdIH7FqlZaDKZqnVqLKpvtrRapzSHAmRtAWxdiLQSsjfCoO1Iukim9FI9s-ky3E7fzrKj2lcE180Ac6OMxWMuKOJcbnSZl8LDQjGmA8BOV8QgegNJbQ"/>
+</div>
+<div>
+<p class="text-on-background font-bold">Marcus Sterling</p>
+<p class="text-label-sm text-on-surface-variant">Senior Property Consultant</p>
+</div>
+</div>
+</div>
+<div class="bg-primary/5 p-6 rounded-xl border border-primary/10">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary">verified</span>
+<div>
+<h4 class="font-bold text-primary mb-1">PropViz Certified</h4>
+<p class="text-label-sm text-on-surface-variant">This tour has been AI-verified for spatial accuracy and structural integrity reporting.</p>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full bg-surface-container-lowest dark:bg-on-background border-t border-outline-variant dark:border-outline py-8 mt-auto">
+<div class="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center px-8">
+<div class="text-lg font-bold text-primary dark:text-primary-fixed-dim mb-4 md:mb-0">PropViz AI</div>
+<div class="text-on-surface-variant dark:text-surface-variant font-body text-label-sm mb-4 md:mb-0">
+                © 2024 Win Win Properties. Powered by PropViz AI.
+            </div>
+<div class="flex space-x-6">
+<a class="font-body text-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-body text-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="font-body text-label-sm text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">Contact Support</a>
+</div>
+</div>
+</footer>
+</body></html>

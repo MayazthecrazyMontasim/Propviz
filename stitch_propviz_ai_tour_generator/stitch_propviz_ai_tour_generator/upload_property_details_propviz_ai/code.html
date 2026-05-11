@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Upload Property - PropViz AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error": "#ba1a1a",
+                    "on-background": "#221a12",
+                    "on-tertiary-fixed-variant": "#004c6a",
+                    "surface-tint": "#855300",
+                    "surface-container-low": "#fff1e5",
+                    "on-secondary-fixed": "#002113",
+                    "primary": "#855300",
+                    "on-primary-fixed": "#2a1700",
+                    "inverse-surface": "#382f25",
+                    "on-primary-container": "#613b00",
+                    "surface-bright": "#fff8f4",
+                    "primary-fixed-dim": "#ffb95f",
+                    "on-tertiary": "#ffffff",
+                    "inverse-primary": "#ffb95f",
+                    "on-tertiary-fixed": "#001e2d",
+                    "on-tertiary-container": "#004966",
+                    "on-secondary-container": "#00714d",
+                    "surface": "#fff8f4",
+                    "secondary-fixed-dim": "#4edea3",
+                    "tertiary-fixed": "#c5e7ff",
+                    "surface-variant": "#f0e0d1",
+                    "primary-container": "#f59e0b",
+                    "on-error": "#ffffff",
+                    "surface-container-highest": "#f0e0d1",
+                    "on-surface": "#221a12",
+                    "on-secondary": "#ffffff",
+                    "tertiary-container": "#1abdff",
+                    "on-secondary-fixed-variant": "#005236",
+                    "background": "#fff8f4",
+                    "outline-variant": "#d8c3ad",
+                    "on-primary-fixed-variant": "#653e00",
+                    "surface-container-high": "#f5e6d7",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary": "#00658b",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed-dim": "#7fd0ff",
+                    "secondary-container": "#6cf8bb",
+                    "surface-container": "#fbebdd",
+                    "outline": "#867461",
+                    "secondary-fixed": "#6ffbbe",
+                    "inverse-on-surface": "#feeedf",
+                    "on-surface-variant": "#534434",
+                    "secondary": "#006c49",
+                    "on-primary": "#ffffff",
+                    "primary-fixed": "#ffddb8",
+                    "surface-dim": "#e7d7c9",
+                    "on-error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "display": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F9FAFB;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-8 h-16 bg-surface border-b border-outline-variant shadow-sm max-w-[1280px] mx-auto left-0 right-0">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black text-primary tracking-tight">PropViz AI</span>
+<div class="hidden md:flex gap-6 items-center">
+<a class="font-body text-label-md font-medium text-primary border-b-2 border-primary pb-1 transition-colors" href="#">New Tour</a>
+<a class="font-body text-label-md font-medium text-on-surface-variant hover:bg-surface-container-low transition-colors px-2 py-1 rounded" href="#">Dashboard</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+</button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="pt-24 pb-16 px-4 md:px-8 max-w-[1280px] mx-auto min-h-screen flex flex-col items-center">
+<!-- Step Indicator Header -->
+<div class="w-full max-w-4xl mb-10">
+<div class="flex justify-between items-center relative">
+<!-- Connecting Line -->
+<div class="absolute top-5 left-0 w-full h-[2px] bg-outline-variant -z-10"></div>
+<div class="absolute top-5 left-0 w-1/4 h-[2px] bg-primary-container -z-10"></div>
+<!-- Steps -->
+<div class="flex flex-col items-center gap-2 group">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold shadow-sm">1</div>
+<span class="text-xs font-bold text-primary">Property Details</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-bold">2</div>
+<span class="text-xs font-medium text-on-surface-variant">Upload Files</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-bold">3</div>
+<span class="text-xs font-medium text-on-surface-variant">Processing</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-bold">4</div>
+<span class="text-xs font-medium text-on-surface-variant">Done</span>
+</div>
+</div>
+</div>
+<!-- Form Card -->
+<section class="w-full max-w-4xl bg-surface-container-lowest rounded-xl shadow-md border border-outline-variant p-8 md:p-12">
+<div class="mb-8">
+<h1 class="text-2xl font-extrabold text-on-surface tracking-tight mb-2">Create New Property Tour</h1>
+<p class="text-on-surface-variant text-sm">Provide the foundational data for your AI-powered property visualization.</p>
+</div>
+<form class="space-y-8">
+<!-- Grid Layout for Inputs -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+<!-- Property Name -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-bold text-on-surface" for="prop_name">Property Name</label>
+<input class="w-full bg-surface px-4 py-3 rounded-lg border border-outline focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all outline-none" id="prop_name" placeholder="e.g. Skyline Residences Penthouse" type="text"/>
+</div>
+<!-- Developer -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-bold text-on-surface" for="developer">Developer</label>
+<input class="w-full bg-surface px-4 py-3 rounded-lg border border-outline focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all outline-none" id="developer" placeholder="e.g. Elite Urban Developments" type="text"/>
+</div>
+<!-- Location -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-bold text-on-surface" for="location">Location</label>
+<div class="relative">
+<input class="w-full bg-surface pl-10 pr-4 py-3 rounded-lg border border-outline focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all outline-none" id="location" placeholder="Downtown Metropolitan" type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-3 text-on-surface-variant text-lg" data-icon="location_on">location_on</span>
+</div>
+</div>
+<!-- Unit Type -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-bold text-on-surface" for="unit_type">Unit Type</label>
+<select class="w-full bg-surface px-4 py-3 rounded-lg border border-outline focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all outline-none appearance-none" id="unit_type">
+<option>Studio Apartment</option>
+<option>1 Bedroom Suite</option>
+<option>2 Bedroom Premium</option>
+<option>3 Bedroom Penthouse</option>
+<option>Vila / Mansion</option>
+</select>
+</div>
+<!-- Area -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-bold text-on-surface" for="area">Area (sqft)</label>
+<div class="relative">
+<input class="w-full bg-surface px-4 py-3 rounded-lg border border-outline focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all outline-none" id="area" placeholder="1,250" type="number"/>
+<span class="absolute right-4 top-3 text-on-surface-variant text-sm font-medium">sqft</span>
+</div>
+</div>
+<!-- Price Range -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-bold text-on-surface" for="price">Price Range</label>
+<div class="relative">
+<select class="w-full bg-surface px-4 py-3 rounded-lg border border-outline focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all outline-none appearance-none" id="price">
+<option>$500k - $750k</option>
+<option>$750k - $1M</option>
+<option>$1M - $2M</option>
+<option>$2M+</option>
+</select>
+</div>
+</div>
+</div>
+<!-- Footer Action -->
+<div class="pt-8 mt-8 border-t border-outline-variant flex justify-end">
+<button class="bg-primary-container hover:bg-primary text-on-primary-fixed-variant font-bold py-3 px-10 rounded-lg shadow-sm hover:shadow-md transition-all active:scale-95 flex items-center gap-2" type="submit">
+<span>Create Job</span>
+<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</form>
+</section>
+<!-- Informational Side Content (Bento Style) -->
+<div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+<div class="bg-surface-container-high p-6 rounded-xl border border-outline-variant flex flex-col gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="description">description</span>
+<h3 class="font-bold text-on-surface">Data Precision</h3>
+<p class="text-xs text-on-surface-variant leading-relaxed">Ensure sqft and price are accurate to help our AI generate realistic valuation metrics and virtual staging.</p>
+</div>
+<div class="bg-surface-container-high p-6 rounded-xl border border-outline-variant flex flex-col gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="speed">speed</span>
+<h3 class="font-bold text-on-surface">Processing Time</h3>
+<p class="text-xs text-on-surface-variant leading-relaxed">Standard jobs are processed within 15 minutes. Premium high-resolution renders may take up to 2 hours.</p>
+</div>
+<div class="bg-surface-container-high p-6 rounded-xl border border-outline-variant flex flex-col gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="security">security</span>
+<h3 class="font-bold text-on-surface">Private Vault</h3>
+<p class="text-xs text-on-surface-variant leading-relaxed">Your uploaded data and blueprints are encrypted and stored in our secure tier-4 data centers.</p>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full bg-surface-container-lowest border-t border-outline-variant py-8">
+<div class="max-w-[1280px] mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex flex-col gap-1">
+<span class="text-lg font-bold text-primary">PropViz AI</span>
+<p class="font-body text-label-sm text-on-surface-variant">© 2024 Win Win Properties. Powered by PropViz AI.</p>
+</div>
+<div class="flex gap-8">
+<a class="font-body text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-body text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Support</a>
+</div>
+</div>
+</footer>
+</body></html>

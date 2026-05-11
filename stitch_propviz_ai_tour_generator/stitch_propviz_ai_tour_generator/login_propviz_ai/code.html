@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login | PropViz AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ba1a1a",
+                        "on-background": "#221a12",
+                        "on-tertiary-fixed-variant": "#004c6a",
+                        "surface-tint": "#855300",
+                        "surface-container-low": "#fff1e5",
+                        "on-secondary-fixed": "#002113",
+                        "primary": "#855300",
+                        "on-primary-fixed": "#2a1700",
+                        "inverse-surface": "#382f25",
+                        "on-primary-container": "#613b00",
+                        "surface-bright": "#fff8f4",
+                        "primary-fixed-dim": "#ffb95f",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#ffb95f",
+                        "on-tertiary-fixed": "#001e2d",
+                        "on-tertiary-container": "#004966",
+                        "on-secondary-container": "#00714d",
+                        "surface": "#fff8f4",
+                        "secondary-fixed-dim": "#4edea3",
+                        "tertiary-fixed": "#c5e7ff",
+                        "surface-variant": "#f0e0d1",
+                        "primary-container": "#f59e0b",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#f0e0d1",
+                        "on-surface": "#221a12",
+                        "on-secondary": "#ffffff",
+                        "tertiary-container": "#1abdff",
+                        "on-secondary-fixed-variant": "#005236",
+                        "background": "#fff8f4",
+                        "outline-variant": "#d8c3ad",
+                        "on-primary-fixed-variant": "#653e00",
+                        "surface-container-high": "#f5e6d7",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#00658b",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#7fd0ff",
+                        "secondary-container": "#6cf8bb",
+                        "surface-container": "#fbebdd",
+                        "outline": "#867461",
+                        "secondary-fixed": "#6ffbbe",
+                        "inverse-on-surface": "#feeedf",
+                        "on-surface-variant": "#534434",
+                        "secondary": "#006c49",
+                        "on-primary": "#ffffff",
+                        "primary-fixed": "#ffddb8",
+                        "surface-dim": "#e7d7c9",
+                        "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "display": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .login-card-shadow {
+            box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .login-card-shadow:hover {
+            box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .primary-button-scale:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body class="bg-[#F9FAFB] min-h-screen flex flex-col">
+<!-- Main Content Canvas -->
+<main class="flex-grow flex items-center justify-center px-4 py-12">
+<div class="w-full max-w-md">
+<!-- Branding Header -->
+<div class="text-center mb-10">
+<h1 class="text-3xl font-black text-primary tracking-tight mb-2">PropViz AI</h1>
+<p class="text-on-surface-variant font-body text-sm">Real estate data intelligence simplified.</p>
+</div>
+<!-- Login Card -->
+<div class="bg-surface-container-lowest rounded-xl p-8 login-card-shadow transition-shadow duration-300">
+<div class="mb-8">
+<h2 class="text-xl font-bold text-on-surface mb-1">Welcome back</h2>
+<p class="text-on-surface-variant text-sm">Please enter your details to sign in.</p>
+</div>
+<form action="#" class="space-y-6" method="POST">
+<!-- Email Field -->
+<div class="space-y-2">
+<label class="block text-label-md font-medium text-on-surface-variant" for="email">Email Address</label>
+<div class="relative">
+<input class="w-full px-4 py-3 bg-white border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-outline" id="email" name="email" placeholder="name@company.com" required="" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<label class="block text-label-md font-medium text-on-surface-variant" for="password">Password</label>
+<a class="text-xs font-semibold text-primary hover:underline transition-all" href="#">Forgot password?</a>
+</div>
+<div class="relative">
+<input class="w-full px-4 py-3 bg-white border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-outline" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+</div>
+</div>
+<!-- Remember Me -->
+<div class="flex items-center">
+<input class="h-4 w-4 rounded border-outline-variant text-primary focus:ring-primary" id="remember" name="remember" type="checkbox"/>
+<label class="ml-2 block text-sm text-on-surface-variant" for="remember">
+                            Remember this device
+                        </label>
+</div>
+<!-- Login Button -->
+<button class="primary-button-scale w-full bg-primary-container text-on-primary font-bold py-3.5 px-4 rounded-lg shadow-sm hover:opacity-95 transition-all flex items-center justify-center gap-2" type="submit">
+<span>Login</span>
+<span class="material-symbols-outlined text-[20px]">login</span>
+</button>
+</form>
+<!-- Social/Other Options -->
+<div class="mt-8 pt-8 border-t border-outline-variant">
+<button class="w-full flex items-center justify-center gap-3 px-4 py-2.5 border border-outline-variant rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors font-medium text-sm" type="button">
+<img alt="Google Logo" class="w-5 h-5" data-alt="The official Google 'G' icon rendered in its classic four-color scheme of blue, red, yellow, and green. The icon is clean and high-resolution, centered on a transparent background to integrate seamlessly into a professional corporate UI. The visual style is crisp and modern, reflecting trust and global accessibility." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_2mlIdFtF2iop9Cc0lAZI4Dg1HdYUj3PnDZ9Vsb0cW93OusdiOOPHLtLnwJQROhznsCUPxm_6bNDJJE9Td_3AyoPqKv3VtrTo-iaaNoHpewKRQ1Kf96xg9uaBMmU5jnSKQ6Qb05Q5zb8vgDsoeNFXF-XozaQDN98sDHaAsW1IWw_kUqfCJrPjItDQoH4fGYauiRo_Ylk0WZJO9n70kLY63wmsh9Dnw6BbMNZ-90ZzVqO1hhW9ymu9asHx9CvIIrUvSDgZxPjnzxg"/>
+                        Sign in with Google
+                    </button>
+</div>
+</div>
+<!-- Footer Help Link -->
+<div class="mt-8 text-center">
+<p class="text-on-surface-variant text-sm">
+                    Don't have an account? 
+                    <a class="text-primary font-bold hover:underline" href="#">Request access</a>
+</p>
+</div>
+</div>
+</main>
+<!-- Shared Footer Component -->
+<footer class="w-full bg-surface-container-lowest border-t border-outline-variant py-8 mt-auto">
+<div class="max-w-[1280px] mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex flex-col items-center md:items-start">
+<span class="text-lg font-bold text-primary tracking-tight">PropViz AI</span>
+<p class="font-body text-label-sm text-on-surface-variant mt-1">© 2024 Win Win Properties. Powered by PropViz AI.</p>
+</div>
+<div class="flex gap-6">
+<a class="font-body text-label-sm text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-body text-label-sm text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="font-body text-label-sm text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Contact Support</a>
+</div>
+</div>
+</footer>
+</body></html>

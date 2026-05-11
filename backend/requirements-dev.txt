@@ -1,0 +1,8 @@
+# Local development on Windows (Python 3.14)
+# Replaces asyncpg with psycopg2-binary which has pre-built Windows wheels
+# Use requirements.txt in Docker/production
+
+-r requirements.txt
+
+# Override asyncpg with sync driver for local dev
+psycopg2-binary==2.9.10

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error": "#ba1a1a",
+                    "on-background": "#221a12",
+                    "on-tertiary-fixed-variant": "#004c6a",
+                    "surface-tint": "#855300",
+                    "surface-container-low": "#fff1e5",
+                    "on-secondary-fixed": "#002113",
+                    "primary": "#855300",
+                    "on-primary-fixed": "#2a1700",
+                    "inverse-surface": "#382f25",
+                    "on-primary-container": "#613b00",
+                    "surface-bright": "#fff8f4",
+                    "primary-fixed-dim": "#ffb95f",
+                    "on-tertiary": "#ffffff",
+                    "inverse-primary": "#ffb95f",
+                    "on-tertiary-fixed": "#001e2d",
+                    "on-tertiary-container": "#004966",
+                    "on-secondary-container": "#00714d",
+                    "surface": "#fff8f4",
+                    "secondary-fixed-dim": "#4edea3",
+                    "tertiary-fixed": "#c5e7ff",
+                    "surface-variant": "#f0e0d1",
+                    "primary-container": "#f59e0b",
+                    "on-error": "#ffffff",
+                    "surface-container-highest": "#f0e0d1",
+                    "on-surface": "#221a12",
+                    "on-secondary": "#ffffff",
+                    "tertiary-container": "#1abdff",
+                    "on-secondary-fixed-variant": "#005236",
+                    "background": "#fff8f4",
+                    "outline-variant": "#d8c3ad",
+                    "on-primary-fixed-variant": "#653e00",
+                    "surface-container-high": "#f5e6d7",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary": "#00658b",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed-dim": "#7fd0ff",
+                    "secondary-container": "#6cf8bb",
+                    "surface-container": "#fbebdd",
+                    "outline": "#867461",
+                    "secondary-fixed": "#6ffbbe",
+                    "inverse-on-surface": "#feeedf",
+                    "on-surface-variant": "#534434",
+                    "secondary": "#006c49",
+                    "on-primary": "#ffffff",
+                    "primary-fixed": "#ffddb8",
+                    "surface-dim": "#e7d7c9",
+                    "on-error-container": "#93000a"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "display": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .progress-bar-glow {
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-background font-body text-on-surface min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 bg-surface border-b border-outline-variant shadow-sm h-16">
+<div class="max-w-[1280px] mx-auto px-8 h-full flex justify-between items-center">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black text-primary tracking-tight">PropViz AI</span>
+<div class="hidden md:flex gap-6 items-center">
+<a class="font-body text-label-md font-medium text-primary border-b-2 border-primary pb-1 transition-colors" href="#">New Tour</a>
+<a class="font-body text-label-md font-medium text-on-surface-variant hover:bg-surface-container-low transition-colors px-2 py-1 rounded" href="#">Dashboard</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors">logout</button>
+</div>
+</div>
+</nav>
+<!-- Main Canvas -->
+<main class="flex-grow pt-24 pb-12 px-4">
+<div class="max-w-[1280px] mx-auto">
+<!-- Step Progress Indicator -->
+<div class="max-w-3xl mx-auto mb-12">
+<div class="relative flex justify-between items-center">
+<!-- Progress Line Background -->
+<div class="absolute top-1/2 left-0 w-full h-1 bg-surface-container-high -translate-y-1/2 z-0"></div>
+<!-- Active Progress Line -->
+<div class="absolute top-1/2 left-0 w-2/3 h-1 bg-primary-container -translate-y-1/2 z-0"></div>
+<!-- Steps -->
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white shadow-md">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="mt-2 text-label-sm font-bold text-on-surface">Upload</span>
+</div>
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white shadow-md">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="mt-2 text-label-sm font-bold text-on-surface">Data Analysis</span>
+</div>
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-primary-container border-4 border-surface flex items-center justify-center text-on-primary-container shadow-md">
+<span class="text-sm font-black">3</span>
+</div>
+<span class="mt-2 text-label-sm font-bold text-primary">Processing</span>
+</div>
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="text-sm font-bold">4</span>
+</div>
+<span class="mt-2 text-label-sm font-medium text-on-surface-variant">Review</span>
+</div>
+</div>
+</div>
+<!-- Content Card -->
+<div class="max-w-2xl mx-auto bg-surface-container-lowest rounded-xl shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05)] p-12 border border-outline-variant flex flex-col items-center text-center">
+<!-- Icon & Status -->
+<div class="mb-8 relative">
+<div class="w-20 h-20 bg-surface-container-low rounded-full flex items-center justify-center text-primary-container mb-4">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">architecture</span>
+</div>
+<div class="inline-flex items-center px-3 py-1 rounded-full bg-tertiary-container/10 border border-tertiary-container/20 text-tertiary font-bold text-xs uppercase tracking-wider">
+<span class="w-2 h-2 rounded-full bg-tertiary mr-2"></span>
+                        processing
+                    </div>
+</div>
+<h1 class="text-3xl font-black text-on-surface tracking-tight mb-2">Generating renders</h1>
+<p class="text-on-surface-variant max-w-sm mb-12">Our AI is currently synthesizing high-fidelity 3D visualizations from your uploaded architectural data.</p>
+<!-- Prominent Percentage -->
+<div class="mb-4">
+<span class="text-6xl font-black text-primary tracking-tighter">65%</span>
+</div>
+<!-- Progress Bar -->
+<div class="w-full max-w-md bg-surface-container-high h-4 rounded-full overflow-hidden mb-8 p-1">
+<div class="h-full bg-primary-container rounded-full progress-bar-glow" style="width: 65%"></div>
+</div>
+<!-- Bento Grid Details (Subtle Context) -->
+<div class="grid grid-cols-2 gap-4 w-full text-left">
+<div class="bg-surface-bright border border-outline-variant p-4 rounded-lg">
+<span class="text-label-sm text-on-surface-variant block mb-1">Total Assets</span>
+<span class="text-xl font-bold text-on-surface">14 / 22</span>
+</div>
+<div class="bg-surface-bright border border-outline-variant p-4 rounded-lg">
+<span class="text-label-sm text-on-surface-variant block mb-1">Est. Remaining</span>
+<span class="text-xl font-bold text-on-surface">~45 seconds</span>
+</div>
+</div>
+<div class="mt-12 flex flex-col items-center">
+<p class="text-label-sm text-on-surface-variant italic">Please do not close this window while processing is active.</p>
+</div>
+</div>
+<!-- Background Visual Decor (Subtle Image Reference) -->
+<div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 opacity-40">
+<div class="aspect-video rounded-lg overflow-hidden border border-outline-variant grayscale">
+<img alt="Luxury Modern Architecture" class="w-full h-full object-cover" data-alt="A cinematic, wide-angle shot of a luxurious modern villa at dusk, showcasing clean architectural lines and warm interior lighting through large glass panes. The image is captured in a high-end architectural photography style, with a soft golden hour glow that emphasizes the property's premium status and the professional, forward-thinking brand of PropViz AI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcNGXy5qVtTyAi7IlLlnZGHaGPiRYRATDwvIMAQ5n1iZMqJ3XXlH-Ue-GDBqWM2_4Mzbq1A2bGFG38bLQZbB6kTdx1_UVp3ODmIOZO09_Mja72y0N_eRG7FxtYyod70uhJ4v3DsLXQbGuNG9FqrLyD6hpYyk2csYfIXFCp6AsvC1edLf_2QALRDRJuFBau230lsOMIMaiw4zJkXPdNQlusPr6UcOm-w1e3dDhd17zcf2a45mvc-XcTucGse9XOaCfJOHwnx0hxPIY"/>
+</div>
+<div class="aspect-video rounded-lg overflow-hidden border border-outline-variant grayscale">
+<img alt="Modern Interior Render" class="w-full h-full object-cover" data-alt="A bright, minimalist interior space featuring high ceilings, white walls, and elegant gold accents on lighting fixtures and furniture legs. The room is flooded with natural daylight from floor-to-ceiling windows, creating a clean and airy atmosphere. The composition is mathematically balanced, reflecting the precision and reliability of the data-driven PropViz AI platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNAiYxq_FR3XN8485s5Etj9uIsENNtWywn_QAeKZz-BLFZYAqcWUoKYX9YdhV079FjXA5Go1j7Gjr7nRm-ZdnIPvzRImy1gWYCDGmOhOkHcPVJv6SSQwBlnqPlZqhHlk5XKOvxYha3gdaPkXHEtMbjah7xEAbjmJSD4vnS2sK9_2bmloaKZ6Qxz_tjFhOCOBpTvT7ejxz3GVrcDU-nLqd6A-u5IVIlsIpm7BAqMsTrr0Q6BDuSkgodfiDx2a1ZZHssyc_qk0SAnvY"/>
+</div>
+<div class="aspect-video rounded-lg overflow-hidden border border-outline-variant grayscale">
+<img alt="Architectural Blueprint Overlay" class="w-full h-full object-cover" data-alt="A sophisticated digital overlay showing complex 3D wireframe models and architectural blueprints of a contemporary residential building. The visualization uses a palette of slate grays and vibrant gold highlight lines, symbolizing the bridge between raw complex data and actionable insights in a corporate modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHbRXBBBW-ATG_7ZRoOp7fotHg07M7N3c8Gh04dgda-27kVE20Lx8oDTfGlPhm0dcrTv0lWD9Q7Ht-qD4mjoupkBF1kFedwmJQh9_Y9pGQFDD4hZX9kv0PVfozi-1m5TQJzuz1G9l151Unfg3yM3TlKrzK_nxGlNItoV5uS1kpnOcvP8paCCs7YVn5ygDrw3Vx58UL2fnKoqCd3GmORHUQ_FzA-yJHABFha9EmAkTHh3L3ZSkZX7tniZYrh92yN1GUzBGFv6EV1Sw"/>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full border-t border-outline-variant bg-surface-container-lowest py-8">
+<div class="max-w-[1280px] mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="text-lg font-bold text-primary">PropViz AI</div>
+<div class="text-label-sm text-on-surface-variant">
+                © 2024 Win Win Properties. Powered by PropViz AI.
+            </div>
+<div class="flex gap-6">
+<a class="font-body text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-body text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Support</a>
+</div>
+</div>
+</footer>
+</body></html>

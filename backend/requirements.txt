@@ -1,0 +1,33 @@
+# Web framework
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+python-multipart==0.0.12
+
+# Database
+sqlalchemy[asyncio]==2.0.36
+asyncpg==0.30.0
+alembic==1.14.0
+
+# Config
+pydantic-settings==2.6.1
+
+# Task queue
+celery==5.4.0
+redis==5.2.0
+
+# Storage
+boto3==1.35.68
+
+# Anthropic (Claude)
+anthropic==0.40.0
+
+# HTTP client
+httpx==0.28.0
+
+# Auth
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+
+# Audio / Video (ffmpeg is installed via system package)
+# ffmpeg-python is a thin wrapper — actual encoding handled by ffmpeg binary
+ffmpeg-python==0.2.0
