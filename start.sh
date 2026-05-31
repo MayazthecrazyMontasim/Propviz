@@ -4,7 +4,7 @@ set -e
 echo "=== Starting Celery worker ==="
 celery -A app.workers.celery_app:celery worker \
   --loglevel=info \
-  --queues=celery,ingest,parse,reconstruct,synthesize,postprocess \
+  --queues=celery \
   --concurrency=1 \
   --pool=solo &
 

@@ -22,11 +22,4 @@ celery.conf.update(
     task_acks_late=True,
     worker_prefetch_multiplier=1,
     result_expires=86400,  # 24 hours
-    task_routes={
-        "app.workers.ingest.run": {"queue": "ingest"},
-        "app.workers.parse.run": {"queue": "parse"},
-        "app.workers.reconstruct.run": {"queue": "reconstruct"},
-        "app.workers.synthesize.run": {"queue": "synthesize"},
-        "app.workers.postprocess.run": {"queue": "postprocess"},
-    },
 )
