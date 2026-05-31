@@ -118,16 +118,9 @@ async def start_job(job_id: str, _: ActiveUser, db: AsyncSession = Depends(get_d
     if not job.assets:
         raise HTTPException(status_code=422, detail="No assets uploaded — upload files first")
 
-    try:
-        from app.workers.ingest import run as ingest_run
-        task = ingest_run.delay(job_id)
-        job.celery_task_id = task.id
-    except Exception as e:
-        # Celery/Redis not available — mark job as queued anyway for dev testing
-        job.celery_task_id = None
-        import logging
-        logging.getLogger(__name__).warning("Celery unavailable: %s", e)
-
+    from app.workers.ingest import run as ingest_run
+    task = ingest_run.delay(job_id)
+    job.celery_task_id = task.id
     job.status = JobStatus.INGESTING
     job.progress_pct = 5
     job.error_message = None
