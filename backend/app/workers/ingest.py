@@ -30,10 +30,10 @@ def _classify(mime_type: str, filename: str) -> AssetType:
 @shared_task(bind=True, name="app.workers.ingest.run", max_retries=3)
 def run(self, job_id: str) -> dict[str, Any]:
     import asyncio
-    return asyncio.run(_run_async(job_id))
+    return asyncio.run(_run_async(self, job_id))
 
 
-async def _run_async(job_id: str) -> dict[str, Any]:
+async def _run_async(task: Any, job_id: str) -> dict[str, Any]:
     async with AsyncSessionLocal() as db:
         job = await db.get(Job, job_id)
         if not job:
@@ -72,16 +72,11 @@ async def _run_async(job_id: str) -> dict[str, Any]:
                 "photo_keys": [a.s3_key for a in job.assets if a.asset_type == AssetType.PHOTO],
             }
 
-            log.info("Ingest complete for job %s — triggering parse", job_id)
-
-            # Chain to Stage 2
-            from app.workers.parse import run as parse_run
-            parse_run.delay(job_id, manifest)
-
+            log.info("Ingest complete for job %s", job_id)
             return manifest
 
         except Exception as exc:
             job.status = JobStatus.FAILED
             job.error_message = str(exc)
             await db.commit()
-            raise self.retry(exc=exc, countdown=30)
+            raise task.retry(exc=exc, countdown=30)

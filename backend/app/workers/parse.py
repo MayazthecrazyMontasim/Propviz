@@ -69,11 +69,6 @@ async def _run_async(task, job_id: str, manifest: dict[str, Any]) -> dict[str, A
 
             result = {"job_id": job_id, "rooms": rooms, "brochure": brochure_data}
             log.info("Parse complete for job %s — %d rooms found", job_id, len(rooms))
-
-            # Chain to Stage 3
-            from app.workers.reconstruct import run as reconstruct_run
-            reconstruct_run.delay(job_id, result)
-
             return result
 
         except Exception as exc:

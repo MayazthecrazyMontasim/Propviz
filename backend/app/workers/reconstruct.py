@@ -101,10 +101,6 @@ async def _run_async(task, job_id: str, parse_result: dict[str, Any]) -> dict[st
                 "brochure": brochure,
             }
             log.info("Reconstruct complete for job %s — %d renders", job_id, len(render_keys))
-
-            from app.workers.synthesize import run as synthesize_run
-            synthesize_run.delay(job_id, result)
-
             return result
 
         except Exception as exc:

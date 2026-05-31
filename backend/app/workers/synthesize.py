@@ -93,10 +93,7 @@ async def _run_async(task, job_id: str, data: dict[str, Any]) -> dict[str, Any]:
                 "rooms": rooms,
             }
 
-            log.info("Synthesize complete for job %s — triggering postprocess", job_id)
-            from app.workers.postprocess import run as postprocess_run
-            postprocess_run.delay(job_id, result)
-
+            log.info("Synthesize complete for job %s", job_id)
             return result
 
         except Exception as exc:
