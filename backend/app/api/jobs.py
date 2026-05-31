@@ -118,8 +118,13 @@ async def start_job(job_id: str, _: ActiveUser, db: AsyncSession = Depends(get_d
     if not job.assets:
         raise HTTPException(status_code=422, detail="No assets uploaded — upload files first")
 
+    import logging
+    log = logging.getLogger(__name__)
+    from app.workers.celery_app import celery as celery_app
     from app.workers.ingest import run as ingest_run
-    task = ingest_run.delay(job_id)
+    log.warning("BROKER: %s", celery_app.conf.broker_url)
+    task = ingest_run.apply_async(args=[job_id], queue="celery")
+    log.warning("TASK DISPATCHED: %s to queue=celery", task.id)
     job.celery_task_id = task.id
     job.status = JobStatus.INGESTING
     job.progress_pct = 5
