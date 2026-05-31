@@ -12,9 +12,12 @@ class Settings(BaseSettings):
     @field_validator("database_url", mode="before")
     @classmethod
     def fix_db_url(cls, v: str) -> str:
-        # Railway injects postgresql:// — SQLAlchemy asyncpg needs postgresql+asyncpg://
-        if isinstance(v, str) and v.startswith("postgresql://"):
-            return v.replace("postgresql://", "postgresql+asyncpg://", 1)
+        # Railway/Heroku inject postgres:// or postgresql:// — asyncpg needs postgresql+asyncpg://
+        if isinstance(v, str):
+            if v.startswith("postgres://"):
+                return v.replace("postgres://", "postgresql+asyncpg://", 1)
+            if v.startswith("postgresql://"):
+                return v.replace("postgresql://", "postgresql+asyncpg://", 1)
         return v
 
     # ── Redis / Celery ────────────────────────────────────────────────────────
