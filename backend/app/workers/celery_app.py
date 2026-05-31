@@ -23,10 +23,10 @@ celery.conf.update(
     worker_prefetch_multiplier=1,
     result_expires=86400,  # 24 hours
     task_routes={
-        "app.workers.ingest.*": {"queue": "ingest"},
-        "app.workers.parse.*": {"queue": "parse"},
-        "app.workers.reconstruct.*": {"queue": "reconstruct"},
-        "app.workers.synthesize.*": {"queue": "synthesize"},
-        "app.workers.postprocess.*": {"queue": "postprocess"},
+        "app.workers.ingest.run": {"queue": "ingest"},
+        "app.workers.parse.run": {"queue": "parse"},
+        "app.workers.reconstruct.run": {"queue": "reconstruct"},
+        "app.workers.synthesize.run": {"queue": "synthesize"},
+        "app.workers.postprocess.run": {"queue": "postprocess"},
     },
 )
