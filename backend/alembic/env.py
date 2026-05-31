@@ -18,9 +18,11 @@ target_metadata = Base.metadata
 # Convert async URL to sync for Alembic (psycopg2 locally, asyncpg in Docker)
 def get_sync_url() -> str:
     url = settings.database_url
-    # Strip async driver prefixes for Alembic sync connection
     return url.replace("postgresql+asyncpg://", "postgresql+psycopg2://") \
-              .replace("postgresql+psycopg://", "postgresql+psycopg2://")
+              .replace("postgresql+psycopg://", "postgresql+psycopg2://") \
+              .replace("postgresql+psycopg_async://", "postgresql+psycopg2://") \
+              .replace("postgres://", "postgresql+psycopg2://") \
+              .replace("postgresql://", "postgresql+psycopg2://")
 
 config.set_main_option("sqlalchemy.url", get_sync_url())
 
