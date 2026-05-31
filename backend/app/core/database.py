@@ -5,10 +5,19 @@ from app.core.config import settings
 
 
 def _asyncpg_url(url: str) -> str:
-    if url.startswith("postgres://"):
-        return url.replace("postgres://", "postgresql+asyncpg://", 1)
-    if url.startswith("postgresql://"):
-        return url.replace("postgresql://", "postgresql+asyncpg://", 1)
+    # Strip any postgresql driver prefix and replace with asyncpg
+    prefixes = (
+        "postgresql+psycopg_async://",
+        "postgresql+psycopg2_async://",
+        "postgresql+psycopg2://",
+        "postgresql+psycopg://",
+        "postgresql+asyncpg://",
+        "postgresql://",
+        "postgres://",
+    )
+    for prefix in prefixes:
+        if url.startswith(prefix):
+            return "postgresql+asyncpg://" + url[len(prefix):]
     return url
 
 
