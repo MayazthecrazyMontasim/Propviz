@@ -26,6 +26,10 @@ class Settings(BaseSettings):
     anthropic_api_key: str = ""
     claude_model: str = "claude-opus-4-7"
 
+    # ── Google Gemini (free-tier alternative to Anthropic) ────────────────────
+    gemini_api_key: str = ""
+    gemini_model: str = "gemini-1.5-flash"
+
     # ── ElevenLabs ────────────────────────────────────────────────────────────
     elevenlabs_api_key: str = ""
     elevenlabs_voice_id: str = "21m00Tcm4TlvDq8ikWAM"  # Rachel (warm, professional)

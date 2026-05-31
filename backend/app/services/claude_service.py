@@ -1,13 +1,16 @@
+"""
+AI service — routes to Anthropic Claude or Google Gemini depending on which
+API key is configured. Set ANTHROPIC_API_KEY for Claude, GEMINI_API_KEY for
+Gemini (free tier). Gemini is used as a fallback when Claude is not configured.
+"""
 import base64
 import json
 import re
 from typing import Any
 
-import anthropic
-
 from app.core.config import settings
 
-_client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key)
+# ── Prompts (shared between providers) ───────────────────────────────────────
 
 FLOOR_PLAN_PROMPT = """You are an architectural assistant. Analyze this floor plan image and extract all rooms.
 
@@ -47,50 +50,105 @@ End with a soft call to action. Keep it intimate and honest — not salesy.
 Maximum 200 words. Return only the narration text."""
 
 
-async def parse_floor_plan(image_bytes: bytes, mime_type: str) -> list[dict[str, Any]]:
+# ── Provider selection ────────────────────────────────────────────────────────
+
+def _provider() -> str:
+    key = settings.anthropic_api_key
+    if key and key not in ("", "sk-ant-..."):
+        return "anthropic"
+    if settings.gemini_api_key:
+        return "gemini"
+    raise RuntimeError(
+        "No AI provider configured. Set ANTHROPIC_API_KEY or GEMINI_API_KEY in backend/.env"
+    )
+
+
+# ── Anthropic implementation ──────────────────────────────────────────────────
+
+async def _anthropic_vision(image_bytes: bytes, mime_type: str, prompt: str) -> str:
+    import anthropic
+    client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key)
     b64 = base64.standard_b64encode(image_bytes).decode()
-    response = await _client.messages.create(
+    response = await client.messages.create(
         model=settings.claude_model,
         max_tokens=2048,
         messages=[{
             "role": "user",
             "content": [
                 {"type": "image", "source": {"type": "base64", "media_type": mime_type, "data": b64}},
-                {"type": "text", "text": FLOOR_PLAN_PROMPT},
+                {"type": "text", "text": prompt},
             ],
-        }],
-    )
-    raw = response.content[0].text.strip()
-    return json.loads(_strip_json_fences(raw))
-
-
-async def parse_brochure(image_bytes: bytes, mime_type: str) -> dict[str, Any]:
-    b64 = base64.standard_b64encode(image_bytes).decode()
-    response = await _client.messages.create(
-        model=settings.claude_model,
-        max_tokens=2048,
-        messages=[{
-            "role": "user",
-            "content": [
-                {"type": "image", "source": {"type": "base64", "media_type": mime_type, "data": b64}},
-                {"type": "text", "text": BROCHURE_PROMPT},
-            ],
-        }],
-    )
-    raw = response.content[0].text.strip()
-    return json.loads(_strip_json_fences(raw))
-
-
-async def generate_narration_script(property_summary: str) -> str:
-    response = await _client.messages.create(
-        model=settings.claude_model,
-        max_tokens=512,
-        messages=[{
-            "role": "user",
-            "content": NARRATION_PROMPT.format(property_summary=property_summary),
         }],
     )
     return response.content[0].text.strip()
+
+
+async def _anthropic_text(prompt: str, max_tokens: int = 2048) -> str:
+    import anthropic
+    client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key)
+    response = await client.messages.create(
+        model=settings.claude_model,
+        max_tokens=max_tokens,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return response.content[0].text.strip()
+
+
+# ── Gemini implementation ─────────────────────────────────────────────────────
+
+def _gemini_model():
+    import google.generativeai as genai
+    genai.configure(api_key=settings.gemini_api_key)
+    return genai.GenerativeModel(settings.gemini_model)
+
+
+async def _gemini_vision(image_bytes: bytes, mime_type: str, prompt: str) -> str:
+    import asyncio
+    import google.generativeai as genai
+
+    def _call():
+        model = _gemini_model()
+        part = {"mime_type": mime_type, "data": image_bytes}
+        response = model.generate_content([part, prompt])
+        return response.text.strip()
+
+    return await asyncio.to_thread(_call)
+
+
+async def _gemini_text(prompt: str) -> str:
+    import asyncio
+
+    def _call():
+        model = _gemini_model()
+        response = model.generate_content(prompt)
+        return response.text.strip()
+
+    return await asyncio.to_thread(_call)
+
+
+# ── Public API (same interface regardless of provider) ────────────────────────
+
+async def parse_floor_plan(image_bytes: bytes, mime_type: str) -> list[dict[str, Any]]:
+    if _provider() == "anthropic":
+        raw = await _anthropic_vision(image_bytes, mime_type, FLOOR_PLAN_PROMPT)
+    else:
+        raw = await _gemini_vision(image_bytes, mime_type, FLOOR_PLAN_PROMPT)
+    return json.loads(_strip_fences(raw))
+
+
+async def parse_brochure(image_bytes: bytes, mime_type: str) -> dict[str, Any]:
+    if _provider() == "anthropic":
+        raw = await _anthropic_vision(image_bytes, mime_type, BROCHURE_PROMPT)
+    else:
+        raw = await _gemini_vision(image_bytes, mime_type, BROCHURE_PROMPT)
+    return json.loads(_strip_fences(raw))
+
+
+async def generate_narration_script(property_summary: str) -> str:
+    prompt = NARRATION_PROMPT.format(property_summary=property_summary)
+    if _provider() == "anthropic":
+        return await _anthropic_text(prompt, max_tokens=512)
+    return await _gemini_text(prompt)
 
 
 async def generate_render_prompts(rooms: list[dict[str, Any]], style_hint: str = "") -> list[dict[str, str]]:
@@ -111,14 +169,12 @@ Return a JSON array where each item has:
 
 Return ONLY valid JSON."""
 
-    response = await _client.messages.create(
-        model=settings.claude_model,
-        max_tokens=2048,
-        messages=[{"role": "user", "content": prompt}],
-    )
-    raw = response.content[0].text.strip()
-    return json.loads(_strip_json_fences(raw))
+    if _provider() == "anthropic":
+        raw = await _anthropic_text(prompt, max_tokens=2048)
+    else:
+        raw = await _gemini_text(prompt)
+    return json.loads(_strip_fences(raw))
 
 
-def _strip_json_fences(text: str) -> str:
+def _strip_fences(text: str) -> str:
     return re.sub(r"^```(?:json)?\s*|\s*```$", "", text, flags=re.MULTILINE).strip()
