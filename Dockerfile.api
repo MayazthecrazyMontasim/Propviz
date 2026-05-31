@@ -11,9 +11,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY backend/ .
 
-# Start Celery worker in background, then run migrations and start API
+# Start Celery worker (single process, minimal memory) then API
 CMD celery -A app.workers.celery_app:celery worker \
       --loglevel=info \
-      --queues=ingest,parse,reconstruct,synthesize,postprocess & \
+      --queues=ingest,parse,reconstruct,synthesize,postprocess \
+      --concurrency=1 \
+      --pool=solo & \
     alembic upgrade head && \
     uvicorn app.main:app --host 0.0.0.0 --port 8000
