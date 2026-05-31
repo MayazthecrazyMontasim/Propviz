@@ -5,8 +5,7 @@ echo "=== Starting Celery worker ==="
 celery -A app.workers.celery_app:celery worker \
   --loglevel=info \
   --queues=celery \
-  --concurrency=1 \
-  --pool=solo &
+  --concurrency=1 &
 
 CELERY_PID=$!
 echo "=== Celery PID: $CELERY_PID ==="
