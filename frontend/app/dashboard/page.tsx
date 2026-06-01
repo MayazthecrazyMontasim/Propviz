@@ -24,6 +24,7 @@ export default function DashboardPage() {
   const [jobs, setJobs] = useState<JobListItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState<string | null>(null);
 
   useEffect(() => {
     api.listJobs()
@@ -31,6 +32,19 @@ export default function DashboardPage() {
       .catch((e) => setError(String(e)))
       .finally(() => setLoading(false));
   }, []);
+
+  async function handleDelete(jobId: string) {
+    if (!confirm("Delete this job? This cannot be undone.")) return;
+    setDeleting(jobId);
+    try {
+      await api.deleteJob(jobId);
+      setJobs((prev) => prev.filter((j) => j.id !== jobId));
+    } catch (e) {
+      alert(`Delete failed: ${e}`);
+    } finally {
+      setDeleting(null);
+    }
+  }
 
   const stats = {
     total: jobs.length,
@@ -116,15 +130,25 @@ export default function DashboardPage() {
                           </div>
                         </td>
                         <td className="px-6 py-4 text-right">
-                          <Link
-                            href={`/viewer/${job.id}`}
-                            className={`font-bold text-sm flex items-center gap-1 ml-auto justify-end ${job.status === "complete" ? "text-primary hover:underline" : "text-on-surface-variant hover:text-primary"}`}
-                          >
-                            {job.status === "complete" ? "View Tour" : "Monitor"}
-                            <span className="material-symbols-outlined text-sm">
-                              {job.status === "complete" ? "visibility" : "monitoring"}
-                            </span>
-                          </Link>
+                          <div className="flex items-center gap-3 justify-end">
+                            <Link
+                              href={`/viewer/${job.id}`}
+                              className={`font-bold text-sm flex items-center gap-1 ${job.status === "complete" ? "text-primary hover:underline" : "text-on-surface-variant hover:text-primary"}`}
+                            >
+                              {job.status === "complete" ? "View Tour" : "Monitor"}
+                              <span className="material-symbols-outlined text-sm">
+                                {job.status === "complete" ? "visibility" : "monitoring"}
+                              </span>
+                            </Link>
+                            <button
+                              onClick={() => handleDelete(job.id)}
+                              disabled={deleting === job.id}
+                              className="text-error hover:text-error/70 disabled:opacity-40 transition-colors"
+                              title="Delete job"
+                            >
+                              <span className="material-symbols-outlined text-sm">delete</span>
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}
