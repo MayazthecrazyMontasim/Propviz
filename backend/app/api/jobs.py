@@ -134,6 +134,48 @@ async def start_job(
     return job
 
 
+@router.get("/{job_id}/debug")
+async def debug_job(job_id: str, _: ActiveUser, db: AsyncSession = Depends(get_db)):
+    """Debug endpoint: shows assets, storage state, and runs ingest stage directly."""
+    from app.services import storage_service
+    job = await db.get(Job, job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail="Job not found")
+
+    assets_info = []
+    for asset in job.assets:
+        exists = storage_service.key_exists(asset.s3_key)
+        assets_info.append({
+            "id": asset.id,
+            "type": str(asset.asset_type),
+            "filename": asset.original_filename,
+            "s3_key": asset.s3_key,
+            "exists_in_storage": exists,
+        })
+
+    # Try running ingest directly and report result
+    ingest_result = None
+    ingest_error = None
+    try:
+        from app.pipeline import _MockTask
+        from app.workers.ingest import _run_async as ingest_async
+        mock = _MockTask()
+        ingest_result = await ingest_async(mock, job_id)
+    except Exception as exc:
+        import traceback
+        ingest_error = f"{type(exc).__name__}: {exc}\n{traceback.format_exc()}"
+
+    return {
+        "job_id": job_id,
+        "status": str(job.status),
+        "progress_pct": job.progress_pct,
+        "asset_count": len(job.assets),
+        "assets": assets_info,
+        "ingest_result": ingest_result,
+        "ingest_error": ingest_error,
+    }
+
+
 @router.delete("/{job_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_job(job_id: str, _: ActiveUser, db: AsyncSession = Depends(get_db)):
     job = await db.get(Job, job_id)

@@ -1,51 +1,57 @@
 """
-Standalone pipeline runner — executes all 5 stages sequentially as an
-asyncio task in the same event loop as the API server (uvicorn).
-No threads, no separate event loops, no Redis/Celery required.
+Standalone pipeline runner — executes all 5 stages sequentially.
+Uses print() so output is guaranteed visible in Railway logs.
 """
-import asyncio
-import logging
-
-log = logging.getLogger(__name__)
+import sys
 
 
 class _MockTask:
-    """Minimal Celery task stand-in so worker _run_async functions work."""
     def retry(self, exc=None, **kwargs):
         raise exc
 
 
 async def run(job_id: str) -> None:
-    """Run the full 5-stage pipeline as an asyncio coroutine."""
-    mock = _MockTask()
-
-    from app.workers.ingest import _run_async as ingest_async
-    from app.workers.parse import _run_async as parse_async
-    from app.workers.reconstruct import _run_async as reconstruct_async
-    from app.workers.synthesize import _run_async as synthesize_async
-    from app.workers.postprocess import _run_async as postprocess_async
+    """Run the full 5-stage pipeline."""
+    print(f"[PIPELINE] START job={job_id}", flush=True)
+    sys.stdout.flush()
 
     try:
-        log.warning("PIPELINE stage=ingest job=%s", job_id)
+        mock = _MockTask()
+
+        # Import workers inside try so import errors are caught and logged
+        print(f"[PIPELINE] importing workers", flush=True)
+        from app.workers.ingest import _run_async as ingest_async
+        from app.workers.parse import _run_async as parse_async
+        from app.workers.reconstruct import _run_async as reconstruct_async
+        from app.workers.synthesize import _run_async as synthesize_async
+        from app.workers.postprocess import _run_async as postprocess_async
+        print(f"[PIPELINE] workers imported OK", flush=True)
+
+        print(f"[PIPELINE] stage=ingest job={job_id}", flush=True)
         manifest = await ingest_async(mock, job_id)
+        print(f"[PIPELINE] ingest OK manifest={manifest}", flush=True)
 
-        log.warning("PIPELINE stage=parse job=%s", job_id)
+        print(f"[PIPELINE] stage=parse job={job_id}", flush=True)
         parse_result = await parse_async(mock, job_id, manifest)
+        print(f"[PIPELINE] parse OK rooms={len(parse_result.get('rooms', []))}", flush=True)
 
-        log.warning("PIPELINE stage=reconstruct job=%s", job_id)
+        print(f"[PIPELINE] stage=reconstruct job={job_id}", flush=True)
         reconstruct_result = await reconstruct_async(mock, job_id, parse_result)
+        print(f"[PIPELINE] reconstruct OK", flush=True)
 
-        log.warning("PIPELINE stage=synthesize job=%s", job_id)
+        print(f"[PIPELINE] stage=synthesize job={job_id}", flush=True)
         synthesize_result = await synthesize_async(mock, job_id, reconstruct_result)
+        print(f"[PIPELINE] synthesize OK", flush=True)
 
-        log.warning("PIPELINE stage=postprocess job=%s", job_id)
+        print(f"[PIPELINE] stage=postprocess job={job_id}", flush=True)
         await postprocess_async(mock, job_id, synthesize_result)
-
-        log.warning("PIPELINE complete job=%s", job_id)
+        print(f"[PIPELINE] COMPLETE job={job_id}", flush=True)
 
     except Exception as exc:
-        log.error("PIPELINE FAILED job=%s error=%s", job_id, exc, exc_info=True)
-        # Fallback: mark the job as failed if a stage didn't already do it
+        print(f"[PIPELINE] FAILED job={job_id} error={exc}", flush=True)
+        import traceback
+        traceback.print_exc()
+        # Fallback: mark job as failed if a stage didn't already do it
         try:
             from app.core.database import AsyncSessionLocal
             from app.models.job import Job, JobStatus
@@ -55,5 +61,6 @@ async def run(job_id: str) -> None:
                     job.status = JobStatus.FAILED
                     job.error_message = f"Pipeline error: {exc}"
                     await db.commit()
+                    print(f"[PIPELINE] marked job {job_id} as FAILED", flush=True)
         except Exception as db_exc:
-            log.error("PIPELINE could not update job status: %s", db_exc)
+            print(f"[PIPELINE] could not update job status: {db_exc}", flush=True)
