@@ -6,7 +6,11 @@ _BASE = "https://api.elevenlabs.io/v1"
 
 
 async def text_to_speech(text: str, voice_id: str | None = None) -> bytes:
-    """Convert narration text to MP3 audio bytes via ElevenLabs."""
+    """Convert narration text to MP3. Falls back to silent audio if ElevenLabs has no credits."""
+    if not settings.elevenlabs_api_key:
+        print("[ELEVENLABS] no key set, using silent audio fallback", flush=True)
+        return _silent_mp3(len(text) // 15 + 5)
+
     vid = voice_id or settings.elevenlabs_voice_id
     url = f"{_BASE}/text-to-speech/{vid}"
     headers = {
@@ -20,8 +24,32 @@ async def text_to_speech(text: str, voice_id: str | None = None) -> bytes:
     }
     async with httpx.AsyncClient(timeout=60) as client:
         response = await client.post(url, json=payload, headers=headers)
-        response.raise_for_status()
+        if not response.is_success:
+            print(f"[ELEVENLABS] {response.status_code} — using silent audio fallback", flush=True)
+            return _silent_mp3(len(text) // 15 + 5)
         return response.content
+
+
+def _silent_mp3(duration_seconds: int = 30) -> bytes:
+    """Generate a minimal valid silent MP3 using ffmpeg."""
+    import subprocess
+    import tempfile
+    import os
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        out = os.path.join(tmpdir, "silent.mp3")
+        subprocess.run(
+            [
+                "ffmpeg", "-y",
+                "-f", "lavfi", "-i", f"anullsrc=r=44100:cl=stereo",
+                "-t", str(max(duration_seconds, 5)),
+                "-c:a", "libmp3lame", "-b:a", "128k",
+                out,
+            ],
+            check=True, capture_output=True,
+        )
+        with open(out, "rb") as f:
+            return f.read()
 
 
 async def list_voices() -> list[dict]:
