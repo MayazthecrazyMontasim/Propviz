@@ -45,4 +45,4 @@ app.mount("/local", StaticFiles(directory=str(_LOCAL_STORAGE)), name="local")
 
 @app.get("/health")
 async def health():
-    return {"status": "ok", "version": "1.0.0"}
+    return {"status": "ok", "version": "2.1.0-debug", "pipeline": "background-tasks"}
