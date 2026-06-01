@@ -1,5 +1,5 @@
 from typing import Any
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -108,7 +108,12 @@ async def get_job(job_id: str, _: ActiveUser, db: AsyncSession = Depends(get_db)
 
 
 @router.post("/{job_id}/start", response_model=JobOut)
-async def start_job(job_id: str, _: ActiveUser, db: AsyncSession = Depends(get_db)):
+async def start_job(
+    job_id: str,
+    background_tasks: BackgroundTasks,
+    _: ActiveUser,
+    db: AsyncSession = Depends(get_db),
+):
     """Trigger the ingest pipeline for a job that has assets uploaded."""
     job = await db.get(Job, job_id)
     if not job:
@@ -118,9 +123,8 @@ async def start_job(job_id: str, _: ActiveUser, db: AsyncSession = Depends(get_d
     if not job.assets:
         raise HTTPException(status_code=422, detail="No assets uploaded — upload files first")
 
-    import asyncio
     from app import pipeline
-    asyncio.create_task(pipeline.run(job_id))
+    background_tasks.add_task(pipeline.run, job_id)
 
     job.status = JobStatus.INGESTING
     job.progress_pct = 5
