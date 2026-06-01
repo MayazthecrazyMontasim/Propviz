@@ -63,6 +63,8 @@ class Settings(BaseSettings):
     secret_key: str = "change-me-in-production"
     allowed_origins: list[str] = ["http://localhost:3000"]
     max_upload_size_mb: int = 50
+    # Public base URL of this API server (used to build local-storage CDN URLs)
+    public_url: str = "http://localhost:8000"
 
 
 @lru_cache

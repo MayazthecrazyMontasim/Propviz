@@ -30,7 +30,8 @@ def upload_fileobj(fileobj: BinaryIO, key: str, content_type: str) -> str:
         path = _local_path(key)
         with open(path, "wb") as f:
             f.write(fileobj.read())
-        return f"http://localhost:8000/local/{key}"
+        base = settings.public_url.rstrip("/")
+        return f"{base}/local/{key}"
 
     import boto3
     s3 = _s3_client()
@@ -65,7 +66,8 @@ def presigned_upload_url(key: str, content_type: str, expires: int = 3600) -> st
 
 def presigned_download_url(key: str, expires: int = 3600) -> str:
     if _use_local():
-        return f"http://localhost:8000/local/{key}"
+        base = settings.public_url.rstrip("/")
+        return f"{base}/local/{key}"
     return _s3_client().generate_presigned_url(
         "get_object",
         Params={"Bucket": settings.storage_bucket, "Key": key},
@@ -85,7 +87,8 @@ def key_exists(key: str) -> bool:
 
 def _url(key: str) -> str:
     if _use_local():
-        return f"http://localhost:8000/local/{key}"
+        base = settings.public_url.rstrip("/")
+        return f"{base}/local/{key}"
     return _s3_url(key)
 
 
