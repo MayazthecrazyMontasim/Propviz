@@ -96,19 +96,19 @@ async def _anthropic_text(prompt: str, max_tokens: int = 2048) -> str:
 
 # ── Gemini implementation ─────────────────────────────────────────────────────
 
-def _gemini_model():
+def _gemini_client():
     import google.generativeai as genai
     genai.configure(api_key=settings.gemini_api_key)
-    return genai.GenerativeModel(settings.gemini_model)
+    return genai.GenerativeModel(model_name=settings.gemini_model)
 
 
 async def _gemini_vision(image_bytes: bytes, mime_type: str, prompt: str) -> str:
     import asyncio
-    import google.generativeai as genai
 
     def _call():
-        model = _gemini_model()
-        part = {"mime_type": mime_type, "data": image_bytes}
+        import google.generativeai as genai
+        model = _gemini_client()
+        part = genai.protos.Blob(mime_type=mime_type, data=image_bytes)
         response = model.generate_content([part, prompt])
         return response.text.strip()
 
@@ -119,7 +119,7 @@ async def _gemini_text(prompt: str) -> str:
     import asyncio
 
     def _call():
-        model = _gemini_model()
+        model = _gemini_client()
         response = model.generate_content(prompt)
         return response.text.strip()
 

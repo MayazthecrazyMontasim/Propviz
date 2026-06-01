@@ -40,7 +40,7 @@ class Settings(BaseSettings):
 
     # ── Google Gemini (free-tier alternative to Anthropic) ────────────────────
     gemini_api_key: str = ""
-    gemini_model: str = "gemini-1.5-flash"
+    gemini_model: str = "gemini-2.0-flash"
 
     # ── ElevenLabs ────────────────────────────────────────────────────────────
     elevenlabs_api_key: str = ""
