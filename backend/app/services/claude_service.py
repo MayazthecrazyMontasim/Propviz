@@ -53,13 +53,15 @@ Maximum 200 words. Return only the narration text."""
 # ── Provider selection ────────────────────────────────────────────────────────
 
 def _provider() -> str:
-    key = settings.anthropic_api_key
-    if key and key not in ("", "sk-ant-..."):
+    if settings.groq_api_key and settings.groq_api_key not in ("", "your_groq_key"):
+        return "groq"
+    if settings.anthropic_api_key and settings.anthropic_api_key not in ("", "sk-ant-..."):
         return "anthropic"
     if settings.gemini_api_key:
         return "gemini"
     raise RuntimeError(
-        "No AI provider configured. Set ANTHROPIC_API_KEY or GEMINI_API_KEY in backend/.env"
+        "No AI provider configured. Set GROQ_API_KEY (free at console.groq.com), "
+        "ANTHROPIC_API_KEY, or GEMINI_API_KEY."
     )
 
 
@@ -126,10 +128,41 @@ async def _gemini_text(prompt: str) -> str:
     return await asyncio.to_thread(_call)
 
 
+# ── Groq implementation ───────────────────────────────────────────────────────
+
+async def _groq_vision(image_bytes: bytes, mime_type: str, prompt: str) -> str:
+    from groq import AsyncGroq
+    b64 = base64.standard_b64encode(image_bytes).decode()
+    client = AsyncGroq(api_key=settings.groq_api_key)
+    response = await client.chat.completions.create(
+        model=settings.groq_vision_model,
+        messages=[{"role": "user", "content": [
+            {"type": "image_url", "image_url": {"url": f"data:{mime_type};base64,{b64}"}},
+            {"type": "text", "text": prompt},
+        ]}],
+        max_tokens=2048,
+    )
+    return response.choices[0].message.content.strip()
+
+
+async def _groq_text(prompt: str) -> str:
+    from groq import AsyncGroq
+    client = AsyncGroq(api_key=settings.groq_api_key)
+    response = await client.chat.completions.create(
+        model=settings.groq_text_model,
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=2048,
+    )
+    return response.choices[0].message.content.strip()
+
+
 # ── Public API (same interface regardless of provider) ────────────────────────
 
 async def parse_floor_plan(image_bytes: bytes, mime_type: str) -> list[dict[str, Any]]:
-    if _provider() == "anthropic":
+    p = _provider()
+    if p == "groq":
+        raw = await _groq_vision(image_bytes, mime_type, FLOOR_PLAN_PROMPT)
+    elif p == "anthropic":
         raw = await _anthropic_vision(image_bytes, mime_type, FLOOR_PLAN_PROMPT)
     else:
         raw = await _gemini_vision(image_bytes, mime_type, FLOOR_PLAN_PROMPT)
@@ -137,7 +170,10 @@ async def parse_floor_plan(image_bytes: bytes, mime_type: str) -> list[dict[str,
 
 
 async def parse_brochure(image_bytes: bytes, mime_type: str) -> dict[str, Any]:
-    if _provider() == "anthropic":
+    p = _provider()
+    if p == "groq":
+        raw = await _groq_vision(image_bytes, mime_type, BROCHURE_PROMPT)
+    elif p == "anthropic":
         raw = await _anthropic_vision(image_bytes, mime_type, BROCHURE_PROMPT)
     else:
         raw = await _gemini_vision(image_bytes, mime_type, BROCHURE_PROMPT)
@@ -146,7 +182,10 @@ async def parse_brochure(image_bytes: bytes, mime_type: str) -> dict[str, Any]:
 
 async def generate_narration_script(property_summary: str) -> str:
     prompt = NARRATION_PROMPT.format(property_summary=property_summary)
-    if _provider() == "anthropic":
+    p = _provider()
+    if p == "groq":
+        return await _groq_text(prompt)
+    if p == "anthropic":
         return await _anthropic_text(prompt, max_tokens=512)
     return await _gemini_text(prompt)
 
@@ -169,7 +208,10 @@ Return a JSON array where each item has:
 
 Return ONLY valid JSON."""
 
-    if _provider() == "anthropic":
+    p = _provider()
+    if p == "groq":
+        raw = await _groq_text(prompt)
+    elif p == "anthropic":
         raw = await _anthropic_text(prompt, max_tokens=2048)
     else:
         raw = await _gemini_text(prompt)

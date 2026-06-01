@@ -42,6 +42,11 @@ class Settings(BaseSettings):
     gemini_api_key: str = ""
     gemini_model: str = "gemini-2.0-flash"
 
+    # ── Groq (free-tier alternative, fast inference) ──────────────────────────
+    groq_api_key: str = ""
+    groq_vision_model: str = "meta-llama/llama-4-scout-17b-16e-instruct"
+    groq_text_model: str = "llama-3.3-70b-versatile"
+
     # ── ElevenLabs ────────────────────────────────────────────────────────────
     elevenlabs_api_key: str = ""
     elevenlabs_voice_id: str = "21m00Tcm4TlvDq8ikWAM"  # Rachel (warm, professional)
