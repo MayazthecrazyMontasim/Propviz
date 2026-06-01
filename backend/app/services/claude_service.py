@@ -166,7 +166,7 @@ async def parse_floor_plan(image_bytes: bytes, mime_type: str) -> list[dict[str,
         raw = await _anthropic_vision(image_bytes, mime_type, FLOOR_PLAN_PROMPT)
     else:
         raw = await _gemini_vision(image_bytes, mime_type, FLOOR_PLAN_PROMPT)
-    return json.loads(_strip_fences(raw))
+    return _parse_json_safe(raw, [])
 
 
 async def parse_brochure(image_bytes: bytes, mime_type: str) -> dict[str, Any]:
@@ -177,7 +177,7 @@ async def parse_brochure(image_bytes: bytes, mime_type: str) -> dict[str, Any]:
         raw = await _anthropic_vision(image_bytes, mime_type, BROCHURE_PROMPT)
     else:
         raw = await _gemini_vision(image_bytes, mime_type, BROCHURE_PROMPT)
-    return json.loads(_strip_fences(raw))
+    return _parse_json_safe(raw, {})
 
 
 async def generate_narration_script(property_summary: str) -> str:
@@ -215,8 +215,29 @@ Return ONLY valid JSON."""
         raw = await _anthropic_text(prompt, max_tokens=2048)
     else:
         raw = await _gemini_text(prompt)
-    return json.loads(_strip_fences(raw))
+    return _parse_json_safe(raw, [])
 
 
 def _strip_fences(text: str) -> str:
     return re.sub(r"^```(?:json)?\s*|\s*```$", "", text, flags=re.MULTILINE).strip()
+
+
+def _parse_json_safe(text: str, default: Any) -> Any:
+    """Try multiple strategies to extract valid JSON from LLM output."""
+    cleaned = _strip_fences(text)
+    # Strategy 1: direct parse
+    try:
+        return json.loads(cleaned)
+    except json.JSONDecodeError:
+        pass
+    # Strategy 2: find the first [...] or {...} block
+    for pattern in (r'\[[\s\S]*\]', r'\{[\s\S]*\}'):
+        m = re.search(pattern, cleaned)
+        if m:
+            try:
+                return json.loads(m.group())
+            except json.JSONDecodeError:
+                pass
+    # Strategy 3: give up gracefully
+    print(f"[PARSE] malformed JSON from LLM, using default. Raw: {cleaned[:300]}", flush=True)
+    return default
