@@ -74,11 +74,20 @@ async def _static_clip(image_url: str, duration: int = 5) -> bytes:
             # No image available — generate a solid dark frame
             input_args = ["-f", "lavfi", "-i", "color=c=0x1a1a2e:s=1280x720"]
 
+        # Ken Burns slow zoom — makes static image look cinematic
+        fps = 24
+        frames = duration * fps
+        vf = (
+            f"scale=8000:-1,"
+            f"zoompan=z='min(zoom+0.0008,1.3)':d={frames}"
+            f":x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)',"
+            f"scale=1280:720"
+        )
         subprocess.run(
             ["ffmpeg", "-y"] + input_args + [
                 "-c:v", "libx264", "-t", str(duration),
-                "-pix_fmt", "yuv420p", "-vf", "scale=1280:720",
-                "-r", "24", vid_path,
+                "-pix_fmt", "yuv420p", "-vf", vf,
+                "-r", str(fps), vid_path,
             ],
             check=True, capture_output=True,
         )
